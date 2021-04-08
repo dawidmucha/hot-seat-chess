@@ -1,35 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
 import pieces from './pieces/_pieceImporter'
 
-const currentPieceToNumber = (currentPiece) => {
-	switch(currentPiece) {
-		case 'pb': return 1;
-		case 'Rb': return 2;
-		case 'Nb': return 3;
-		case 'Bb': return 4;
-		case 'Kb': return 5;
-		case 'Qb': return 6;
-		
-		case 'pw': return 7;
-		case 'Rw': return 8;
-		case 'Nw': return 9;
-		case 'Bw': return 10;
-		case 'Kw': return 11;
-		case 'Qw': return 12;
-
+const currentPieceToNumber = (arr) => {
+	let colorModifier = 0;
+	if(arr[1] === 0) colorModifier += 6
+	switch(arr[0]) {
+		case 'p': return 1+colorModifier;
+		case 'R': return 2+colorModifier;
+		case 'N': return 3+colorModifier;
+		case 'B': return 4+colorModifier;
+		case 'K': return 5+colorModifier;
+		case 'Q': return 6+colorModifier;
 		default: return 0;
 	}
 }
 
 const Square = (props) => {
-	const [state, setState] = useState('inactive') // inactive, active, clickable
-	const [currentPiece, setCurrentPiece] = useState(0) //p, R, N, B, Q, K
-
-	React.useEffect(() => {
-		setCurrentPiece(props.initPiece)
-	}, )
-
-	return <img src={pieces[currentPieceToNumber(currentPiece)]} />
+	return (
+		<div>
+			<img alt="chess piece" src={pieces[currentPieceToNumber(props.piece.filter((el, i) => i <= 1))]} />
+		</div>
+	)
 }
 
 export default Square

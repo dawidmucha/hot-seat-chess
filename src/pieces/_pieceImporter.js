@@ -14,4 +14,6 @@ import Qw from './Qw.png'
 
 import blank from './blank.png'
 
-export default [blank, pb, Rb, Nb, Bb, Kb, Qb, pw, Rw, Nw, Bw, Kw, Qw]
+const arr = [blank, pb, Rb, Nb, Bb, Kb, Qb, pw, Rw, Nw, Bw, Kw, Qw]
+
+export default arr

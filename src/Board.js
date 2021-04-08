@@ -1,49 +1,68 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import Square from './Square'
 
 const Board = () => {
-	//#region pieces assign
-		let board = new Array(8).fill(0).map(() => new Array(8).fill(0))
-		board[1].fill('pb')
-		board[0][0] = 'Rb'
-		board[0][7] = 'Rb'
-		board[0][1] = 'Nb'
-		board[0][6] = 'Nb'
-		board[0][2] = 'Bb'
-		board[0][5] = 'Bb'
-		board[0][4] = 'Qb'
-		board[0][3] = 'Kb'
+	//#region boardVar pieces assign 
+		/* 
+			board[i][j] = [
+				pieceName - single letter
+				color - 0 is white, 1 is black. -1 is an empty field
+				status - 0 is unselected, 1 is selected, 2 is selectable
+			]
+		*/
 		
-		board[6].fill('pw')
-		board[7][0] = 'Rw'
-		board[7][7] = 'Rw'
-		board[7][1] = 'Nw'
-		board[7][6] = 'Nw'
-		board[7][2] = 'Bw'
-		board[7][5] = 'Bw'
-		board[7][4] = 'Kw'
-		board[7][3] = 'Qw'
+		let boardVar = new Array(8).fill(0).map(() => new Array(8).fill(['', -1, 0]))
+		boardVar[1].fill(['p', 1, 0])
+		boardVar[0][0] = ['R', 1, 0]
+		boardVar[0][1] = ['N', 1, 0]
+		boardVar[0][2] = ['B', 1, 0]
+		boardVar[0][3] = ['Q', 1, 0]
+		boardVar[0][4] = ['K', 1, 0]
+		boardVar[0][5] = ['B', 1, 0]
+		boardVar[0][6] = ['N', 1, 0]
+		boardVar[0][7] = ['R', 1, 0]
+		
+		boardVar[6].fill(['p', 0, 0])
+		boardVar[7][0] = ['R', 0, 0]
+		boardVar[7][1] = ['N', 0, 0]
+		boardVar[7][2] = ['B', 0, 0]
+		boardVar[7][3] = ['Q', 0, 0]
+		boardVar[7][4] = ['K', 0, 0]
+		boardVar[7][5] = ['B', 0, 0]
+		boardVar[7][6] = ['N', 0, 0]
+		boardVar[7][7] = ['R', 0, 0]
 	//#endregion
 
-	const [currentPiece, setCurrentPiece] = useState('')
+	const [board, setBoard] = useState(new Array(8).fill([]).map(() => new Array(8).fill(['', -1, 0])))
 
 	const arrayToSquareName = (i, j) => {
 		return String.fromCharCode(j+65).concat(8-i)
 	}
 
-	const onClick = (i, j) => {
-		setCurrentPiece(arrayToSquareName(i, j))
+	const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+	useEffect(() => {
+		console.log('effect used')
+	}, [board])
+
+	const bongcloud = () => {
+		const boardTmp = board
+		boardTmp[0][0] = ['K', 0, 0]
+		setBoard(boardTmp)
+		console.log('bongcloud innitiated')
+		forceUpdate()
 	}
 
 	return (
 		<table border='1px solid black' style={{fontSize: '50px'}}>
+			<button onClick={bongcloud}>bongcloud time</button>
 			<tbody>
-				{board.map((boardRank, i) => {
+				{boardVar.map((boardRank, i) => {
 					return (
 						<tr key={`r${i}`}>
 							{boardRank.map((boardSquare, j) => (
 								<td key={arrayToSquareName(i, j)}>
-									<Square key={arrayToSquareName(i, j)} initPiece={board[i][j]} />
+									<Square piece={board[i][j]} />  
 								</td>	
 								))}
 						</tr>
