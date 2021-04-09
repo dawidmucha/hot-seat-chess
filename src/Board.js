@@ -2,7 +2,11 @@ import React, { useState, useEffect, useReducer } from 'react'
 import Square from './Square'
 
 const Board = () => {
-	//#region boardVar pieces assign 
+	const [board, setBoard] = useState(new Array(8).fill([]).map(() => new Array(8).fill(['', -1, 0])))
+	const [, forceUpdate] = useReducer(x => x + 1, 0);
+	
+	const boardInit = () => {
+		const boardTmp = board;
 		/* 
 			board[i][j] = [
 				pieceName - single letter
@@ -10,59 +14,56 @@ const Board = () => {
 				status - 0 is unselected, 1 is selected, 2 is selectable
 			]
 		*/
+		boardTmp[1].fill(['p', 1, 0])
+		boardTmp[0][0] = ['R', 1, 0]
+		boardTmp[0][1] = ['N', 1, 0]
+		boardTmp[0][2] = ['B', 1, 0]
+		boardTmp[0][3] = ['Q', 1, 0]
+		boardTmp[0][4] = ['K', 1, 0]
+		boardTmp[0][5] = ['B', 1, 0]
+		boardTmp[0][6] = ['N', 1, 0]
+		boardTmp[0][7] = ['R', 1, 0]
 		
-		let boardVar = new Array(8).fill(0).map(() => new Array(8).fill(['', -1, 0]))
-		boardVar[1].fill(['p', 1, 0])
-		boardVar[0][0] = ['R', 1, 0]
-		boardVar[0][1] = ['N', 1, 0]
-		boardVar[0][2] = ['B', 1, 0]
-		boardVar[0][3] = ['Q', 1, 0]
-		boardVar[0][4] = ['K', 1, 0]
-		boardVar[0][5] = ['B', 1, 0]
-		boardVar[0][6] = ['N', 1, 0]
-		boardVar[0][7] = ['R', 1, 0]
-		
-		boardVar[6].fill(['p', 0, 0])
-		boardVar[7][0] = ['R', 0, 0]
-		boardVar[7][1] = ['N', 0, 0]
-		boardVar[7][2] = ['B', 0, 0]
-		boardVar[7][3] = ['Q', 0, 0]
-		boardVar[7][4] = ['K', 0, 0]
-		boardVar[7][5] = ['B', 0, 0]
-		boardVar[7][6] = ['N', 0, 0]
-		boardVar[7][7] = ['R', 0, 0]
-	//#endregion
+		boardTmp[6].fill(['p', 0, 0])
+		boardTmp[7][0] = ['R', 0, 0]
+		boardTmp[7][1] = ['N', 0, 0]
+		boardTmp[7][2] = ['B', 0, 0]
+		boardTmp[7][3] = ['Q', 0, 0]
+		boardTmp[7][4] = ['K', 0, 0]
+		boardTmp[7][5] = ['B', 0, 0]
+		boardTmp[7][6] = ['N', 0, 0]
+		boardTmp[7][7] = ['R', 0, 0]
+		setBoard(boardTmp)
+		forceUpdate()
+	}
 
-	const [board, setBoard] = useState(new Array(8).fill([]).map(() => new Array(8).fill(['', -1, 0])))
+	const pieceClicked = (y, x, piece, color, status) => {
+		const colorStr = color === 0 ? 'white' : color === 1 ? 'black' : 'empty'
+		const statusStr = status ===  0 ? 'unselected' : status === 1 ? 'selected' : 'selectable' 
+		console.log('current piece is on a', x, y, 'position')
+		console.log('it\'s a', colorStr, piece, ', that\'s currently', statusStr)
+
+	}
 
 	const arrayToSquareName = (i, j) => {
 		return String.fromCharCode(j+65).concat(8-i)
 	}
 
-	const [, forceUpdate] = useReducer(x => x + 1, 0);
 
 	useEffect(() => {
 		console.log('effect used')
 	}, [board])
 
-	const bongcloud = () => {
-		const boardTmp = board
-		boardTmp[0][0] = ['K', 0, 0]
-		setBoard(boardTmp)
-		console.log('bongcloud innitiated')
-		forceUpdate()
-	}
-
 	return (
 		<table border='1px solid black' style={{fontSize: '50px'}}>
-			<button onClick={bongcloud}>bongcloud time</button>
+			<button onClick={boardInit}>start the game, shall we</button>
 			<tbody>
-				{boardVar.map((boardRank, i) => {
+				{board.map((boardRank, i) => {
 					return (
 						<tr key={`r${i}`}>
 							{boardRank.map((boardSquare, j) => (
-								<td key={arrayToSquareName(i, j)}>
-									<Square piece={board[i][j]} />  
+								<td key={arrayToSquareName(i, j)} onClick={() => pieceClicked(i, j, ...board[i][j])}>
+									<Square piece={board[i][j]}  />  
 								</td>	
 								))}
 						</tr>
