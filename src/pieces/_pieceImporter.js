@@ -13,7 +13,8 @@ import Kw from './Kw.png'
 import Qw from './Qw.png'
 
 import blank from './blank.png'
+import move from './move.png'
 
-const arr = [blank, pb, Rb, Nb, Bb, Kb, Qb, pw, Rw, Nw, Bw, Kw, Qw]
+const arr = [blank, pb, Rb, Nb, Bb, Kb, Qb, pw, Rw, Nw, Bw, Kw, Qw, move]
 
 export default arr
