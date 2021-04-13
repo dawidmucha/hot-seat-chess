@@ -17,8 +17,9 @@ const currentPieceToNumber = (arr) => {
 
 const Square = (props) => {
 	return (
-		<div>
-			<img alt="chess piece" src={pieces[currentPieceToNumber(props.piece.filter((el, i) => i <= 1))]} />
+		<div style={{position: 'relative'}}>
+			<img alt="chess piece" src={pieces[currentPieceToNumber(props.piece.filter((el, i) => i <= 1))]} style={{posiiton: 'absolute'}} />
+			{props.legalMove === 1 ? <img alt='legal move indicator' src={pieces[13]} style={{position: 'absolute', top: '0px', left: '0px'}} /> : ''}
 		</div>
 	)
 }
